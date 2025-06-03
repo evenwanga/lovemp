@@ -1,0 +1,39 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 项目架构概述
+
+本项目采用基于六边形架构的领域驱动设计（DDD）方法实现。项目分为多个边界上下文（限界上下文），每个上下文作为独立模块存在。
+
+## 核心文档
+
+- [项目技术架构设计方案.md](mdc:项目技术架构设计方案.md)：详细的技术架构设计
+- [研发任务清单.md](mdc:研发任务清单.md)：项目开发任务和进度
+- [Spring Boot核心技术验证报告.md](mdc:Spring Boot核心技术验证报告.md)：技术栈验证报告
+
+## 项目模块结构
+
+```
+lovemp-ddd-parent/                        # 父项目
+├── lovemp-common/                        # 公共模块
+├── lovemp-domain-person/                 # 自然人核心域
+├── lovemp-domain-brand/                  # 品牌产品域  
+├── lovemp-domain-labor/                  # 劳动力资源域
+├── lovemp-domain-customer/               # 顾客关系域
+├── lovemp-domain-auth/                   # 认证授权域
+├── lovemp-application/                   # 应用聚合层
+└── lovemp-starter/                       # 启动模块
+```
+
+## 技术栈
+
+- **Spring Boot**: 应用基础框架，版本 3.4.5
+- **Spring Data JPA**: 持久化层框架
+- **Spring Security**: 安全框架
+- **Spring Cloud Stream**: 消息驱动
+- **Redis**: 缓存和分布式锁
+- **MapStruct**: 对象映射
+- **Springdoc-OpenAPI**: API文档
+- **Resilience4j**: 熔断和限流

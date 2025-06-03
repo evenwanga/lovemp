@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BrandCustomerCreatedEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">lovemp-domain-customer</a> &gt; <a href="index.source.html" class="el_package">com.lovemp.domain.customer.domain.event</a> &gt; <span class="el_source">BrandCustomerCreatedEvent.java</span></div><h1>BrandCustomerCreatedEvent.java</h1><pre class="source lang-java linenums">package com.lovemp.domain.customer.domain.event;
+
+import com.lovemp.common.domain.DomainEvent;
+import com.lovemp.domain.customer.domain.model.valueobject.CustomerCode;
+import com.lovemp.domain.customer.domain.model.valueobject.CustomerRelationId;
+import com.lovemp.domain.person.domain.model.valueobject.PersonId;
+import lombok.Getter;
+
+/**
+ * 品牌顾客创建事件
+ */
+@Getter
+public class BrandCustomerCreatedEvent extends DomainEvent {
+    
+    /**
+     * 顾客关系ID
+     */
+<span class="fc" id="L18">    private final CustomerRelationId customerRelationId;</span>
+    
+    /**
+     * 品牌ID
+     */
+<span class="fc" id="L23">    private final String brandId;</span>
+    
+    /**
+     * 自然人ID
+     */
+<span class="fc" id="L28">    private final PersonId personId;</span>
+    
+    /**
+     * 顾客编码
+     */
+<span class="fc" id="L33">    private final CustomerCode customerCode;</span>
+    
+    /**
+     * 构造函数
+     * 
+     * @param customerRelationId 顾客关系ID
+     * @param brandId 品牌ID
+     * @param personId 自然人ID
+     * @param customerCode 顾客编码
+     */
+    public BrandCustomerCreatedEvent(CustomerRelationId customerRelationId, String brandId, 
+                                   PersonId personId, CustomerCode customerCode) {
+<span class="fc" id="L45">        super();</span>
+<span class="fc" id="L46">        this.customerRelationId = customerRelationId;</span>
+<span class="fc" id="L47">        this.brandId = brandId;</span>
+<span class="fc" id="L48">        this.personId = personId;</span>
+<span class="fc" id="L49">        this.customerCode = customerCode;</span>
+<span class="fc" id="L50">    }</span>
+    
+    @Override
+    public String getEventType() {
+<span class="fc" id="L54">        return &quot;BrandCustomerCreated&quot;;</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

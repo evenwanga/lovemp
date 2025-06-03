@@ -1,0 +1,16 @@
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/event/BrandCreatedEvent.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/event/BrandStatusChangedEvent.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/event/BrandUpdatedEvent.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/event/LaborPolicyAddedEvent.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/aggregate/Brand.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/entity/LaborPolicy.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/valueobject/BrandId.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/valueobject/BrandStatus.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/valueobject/BrandType.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/valueobject/LaborPolicyId.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/valueobject/LaborPolicyStatus.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/valueobject/LaborPolicyType.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/model/valueobject/ProductCategory.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/port/outgoing/BrandRepository.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/service/BrandDomainService.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-brand/src/main/java/com/lovemp/domain/brand/domain/service/impl/BrandDomainServiceImpl.java

@@ -1,0 +1,15 @@
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/event/BrandCustomerCreatedEventTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/event/BrandCustomerStatusChangedEventTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/event/BrandCustomerUpdatedEventTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/aggregate/BrandCustomerTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/entity/CustomerSharingTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/AuthLevelTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/CustomerCodeTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/CustomerRelationIdTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/CustomerStatusTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/CustomerTypeTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/RelationTypeTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/SharingIdTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/SharingStatusTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/model/valueobject/SharingTypeTest.java
+/Users/wangyiwen/AICoding/lovemp/lovemp-domain-customer/src/test/java/com/lovemp/domain/customer/domain/service/CustomerDomainServiceTest.java

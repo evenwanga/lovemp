@@ -1,0 +1,16 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,SharingStatus,0,93,0,10,0,17,0,13,0,8
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,CustomerCode,2,103,2,12,0,22,2,13,0,8
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,CustomerType,0,86,0,8,0,16,0,11,0,7
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,SharingId,2,56,2,4,0,13,2,8,0,7
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,CustomerStatus,0,100,0,12,0,18,0,15,0,9
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,RelationType,0,93,0,10,0,17,0,13,0,8
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,SharingType,0,93,0,10,0,17,0,13,0,8
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,AuthLevel,0,102,0,12,0,18,0,15,0,9
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.valueobject,CustomerRelationId,2,56,2,4,0,13,2,8,0,7
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.aggregate,BrandCustomer,8,375,4,28,3,100,4,37,0,25
+lovemp-domain-customer,com.lovemp.domain.customer.domain.service,CustomerDomainService,0,295,3,59,0,79,3,42,0,14
+lovemp-domain-customer,com.lovemp.domain.customer.domain.event,BrandCustomerStatusChangedEvent,0,80,3,9,0,20,3,13,0,10
+lovemp-domain-customer,com.lovemp.domain.customer.domain.event,BrandCustomerCreatedEvent,0,29,0,0,0,11,0,6,0,6
+lovemp-domain-customer,com.lovemp.domain.customer.domain.event,BrandCustomerUpdatedEvent,0,32,0,0,0,10,0,7,0,7
+lovemp-domain-customer,com.lovemp.domain.customer.domain.model.entity,CustomerSharing,5,269,5,31,3,77,5,35,0,22

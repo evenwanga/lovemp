@@ -1,0 +1,86 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 六边形架构实现指南
+
+本项目采用六边形架构（又称端口与适配器架构）实现领域驱动设计。六边形架构的核心是将领域逻辑与技术实现分离，通过端口和适配器实现解耦。
+
+## 架构分层
+
+每个领域模块内部采用以下分层结构：
+
+1. **领域核心(Domain Core)** - 六边形中心
+   - 领域模型：聚合根、实体和值对象
+   - 领域服务：跨实体业务逻辑
+   - 领域事件：表达状态变化
+   - 端口接口：与外部世界交互的接口
+
+2. **应用层(Application Layer)** - 实现入站端口
+   - 应用服务：用例实现，领域操作编排
+   - 命令/查询对象：用例输入封装
+   - 事务管理：确保用例原子性
+
+3. **适配器层(Adapters Layer)** - 连接外部世界与领域
+   - 入站适配器：接收外部请求（REST控制器、消息消费者等）
+   - 出站适配器：实现出站端口（数据库访问、消息发送等）
+
+## 目录结构
+
+```
+domain-module/
+├── domain/                       # 领域核心
+│   ├── model/                    # 领域模型
+│   ├── service/                  # 领域服务
+│   ├── event/                    # 领域事件
+│   └── port/                     # 端口接口
+│       ├── incoming/             # 入站端口
+│       └── outgoing/             # 出站端口
+├── application/                  # 应用层
+│   ├── service/                  # 应用服务
+│   ├── command/                  # 命令
+│   └── query/                    # 查询
+└── adapter/                      # 适配器层
+    ├── incoming/                 # 入站适配器
+    │   ├── rest/                 # REST API
+    │   └── messaging/            # 消息消费
+    └── outgoing/                 # 出站适配器
+        ├── persistence/          # 持久化
+        └── messaging/            # 消息发布
+```
+
+## 依赖规则
+
+1. **依赖方向**：所有依赖箭头都指向领域核心
+2. **领域纯净**：领域层不依赖任何框架或外部库
+3. **端口定义**：端口（接口）在领域层定义
+4. **适配器实现**：适配器在外层实现领域定义的端口
+
+## 示例：仓储模式实现
+
+```java
+// 领域层定义仓储接口（出站端口）
+public interface PersonRepository {
+    Optional<Person> findById(PersonId personId);
+    void save(Person person);
+}
+
+// 适配器层实现仓储接口
+@Repository
+public class PersonRepositoryImpl implements PersonRepository {
+    private final JpaPersonRepository jpaRepository;
+    private final PersonMapper mapper;
+    
+    public PersonRepositoryImpl(JpaPersonRepository jpaRepository, PersonMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.mapper = mapper;
+    }
+    
+    @Override
+    public Optional<Person> findById(PersonId personId) {
+        return jpaRepository.findById(personId.getValue())
+            .map(mapper::toDomain);
+    }
+}
+```

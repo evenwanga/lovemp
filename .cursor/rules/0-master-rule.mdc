@@ -1,0 +1,218 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 项目规则主文档（0号规则）
+
+本文档为项目规则体系的主文档，整合了所有关键规则，并定义了规则调用逻辑和优先级。所有开发活动必须首先参考本规则文档。
+
+## 一、规则体系概述
+
+本规则体系整合了以下7个核心规则：
+
+1. [DDD概念](mdc:.cursor/rules/ddd-concepts.mdc) - 领域驱动设计核心概念
+2. [开发流程](mdc:.cursor/rules/development-process.mdc) - 项目开发流程规范
+3. [六边形架构](mdc:.cursor/rules/hexagonal-architecture.mdc) - 六边形架构实现指南
+4. [测试覆盖率](mdc:.cursor/rules/jacoco-guide.mdc) - JaCoCo测试覆盖率工具指南
+5. [项目架构](mdc:.cursor/rules/project-architecture.mdc) - 项目整体架构概述
+6. [技术实现](mdc:.cursor/rules/tech-implementation.mdc) - 技术栈实现细节
+7. [工具类](mdc:.cursor/rules/utility-classes.mdc) - 工具类使用规范
+
+规则分为**强制性规则**和**场景化规则**两类：
+- **强制性规则**：必须严格遵守，不得违反
+- **场景化规则**：在特定场景下应用，需根据具体情况选择性遵守
+
+## 二、强制性规则
+
+### 1. 开发流程强制规则
+
+基于[开发流程](mdc:.cursor/rules/development-process.mdc)，以下规则**必须**严格遵守：
+
+- **领域需求文档优先**：
+  - 开发任何领域前必须先创建并确认领域需求文档
+  - 需求文档必须包含用户故事、业务规则和验收标准
+  - 文档格式必须为Markdown格式
+
+- **测试驱动开发(TDD)**：
+  - 必须先编写测试用例，再实现功能代码
+  - 测试用例完成后不得随意修改
+  - 单元测试必须覆盖所有核心领域逻辑
+
+- **开发流程检查清单**：
+  - 每个功能开发完成后必须使用清单验证完整性
+  - 必须确保测试覆盖率达到标准要求
+  - 代码必须遵循六边形架构和DDD原则
+
+### 2. 架构实现强制规则
+
+基于[六边形架构](mdc:.cursor/rules/hexagonal-architecture.mdc)，以下架构规则**必须**遵守：
+
+- **依赖方向规则**：
+  - 所有依赖箭头必须指向领域核心
+  - 领域层不得依赖任何框架或外部库
+  - 端口必须在领域层定义，适配器在外层实现
+
+- **分层结构规则**：
+  - 必须严格遵循领域核心、应用层、适配器层的分层架构
+  - 领域模型必须位于六边形中心
+  - 应用服务必须实现用例，编排领域操作
+
+- **目录结构规则**：
+  - 每个领域模块必须按照规定的目录结构组织代码
+
+### 3. 测试覆盖率强制规则
+
+基于[测试覆盖率](mdc:.cursor/rules/jacoco-guide.mdc)，以下JaCoCo相关规则**必须**遵守：
+
+- **报告存储位置规范**：
+  - 所有测试覆盖率报告必须存储在指定目录结构中
+  - 自定义报告必须存放在custom目录，原始报告必须存放在jacoco目录
+
+- **报告生成规范**：
+  - 每次必须同时生成原始JaCoCo报告和自定义中文报告
+  - 自定义中文报告必须遵循命名规范：`{模块名}_coverage_{日期}.html`
+
+## 三、场景化规则
+
+### 1. 领域驱动设计概念应用规则
+
+基于[DDD概念](mdc:.cursor/rules/ddd-concepts.mdc)，以下规则在特定开发场景中应用：
+
+- **限界上下文划分**：
+  - 【场景】：设计新功能或新模块时
+  - 【应用】：确定功能属于哪个限界上下文，并在对应模块中实现
+
+- **聚合根、实体、值对象**：
+  - 【场景】：设计领域模型时
+  - 【应用】：按照DDD原则区分聚合根、实体和值对象，正确实现其特性
+
+- **领域服务**：
+  - 【场景】：处理跨实体业务逻辑时
+  - 【应用】：使用领域服务封装该逻辑，避免业务逻辑泄露到应用层
+
+### 2. 技术实现应用规则
+
+基于[技术实现](mdc:.cursor/rules/tech-implementation.mdc)，以下规则在具体技术实现中应用：
+
+- **依赖注入配置**：
+  - 【场景】：创建新的服务或组件时
+  - 【应用】：使用构造器注入，确保依赖方向正确
+
+- **持久化实现**：
+  - 【场景】：需要数据持久化时
+  - 【应用】：通过适配器模式隔离JPA技术细节
+
+- **对象映射**：
+  - 【场景】：在领域对象与DTO/PO之间转换时
+  - 【应用】：使用MapStruct进行对象映射
+
+### 3. 工具类使用规则
+
+基于[工具类](mdc:.cursor/rules/utility-classes.mdc)，以下规则在使用工具类时应用：
+
+- **现有工具类使用原则**：
+  - 【场景】：实现通用功能时
+  - 【应用】：优先使用现有工具类，避免重复实现
+
+- **新工具类抽象**：
+  - 【场景】：发现可复用功能需要抽象时
+  - 【应用】：使用检查清单验证是否需要创建新的工具类
+  - 【应用】：遵循工具类命名规范和注释模板
+
+## 四、规则调用逻辑
+
+### 1. 开发流程规则调用
+
+- **调用时机**：项目启动、迭代开始、功能开发全流程
+- **优先级**：最高，所有开发活动必须首先确认是否符合开发流程规则
+- **验证方式**：使用开发流程检查清单进行验证
+
+```java
+// 开发流程规则调用示例
+public void startDevelopmentTask(Task task) {
+  // 1. 验证领域需求文档
+  if (!hasRequirementDocument(task.getDomain())) {
+    createRequirementDocument(task.getDomain());
+    confirmRequirementDocument(task.getDomain());
+  }
+  
+  // 2. 编写测试用例
+  writeTestCases(task.getFeature());
+  
+  // 3. 实现功能代码
+  implementFeature(task.getFeature());
+  
+  // 4. 验证开发流程检查清单
+  verifyChecklistItems(task.getFeature());
+}
+```
+
+### 2. 架构规则调用
+
+- **调用时机**：设计新模块、实现新功能、代码审查
+- **优先级**：高，架构合规性直接影响项目质量
+- **验证方式**：架构审查会议、代码审查
+
+```java
+// 架构规则调用示例
+public void implementNewFeature(Feature feature, Domain domain) {
+  // 1. 确定所属层级
+  ArchitectureLayer layer = determineArchitectureLayer(feature);
+  
+  // 2. 按照六边形架构规则实现
+  switch(layer) {
+    case DOMAIN:
+      implementDomainLogic(feature, domain);
+      break;
+    case APPLICATION:
+      implementApplicationService(feature, domain);
+      break;
+    case ADAPTER:
+      implementAdapter(feature, domain, getAdapterType(feature));
+      break;
+  }
+  
+  // 3. 验证依赖方向是否符合规则
+  verifyDependencyDirection(feature);
+}
+```
+
+### 3. 测试覆盖率规则调用
+
+- **调用时机**：完成功能实现后、提交代码前、CI流程中
+- **优先级**：高，确保代码质量和测试覆盖
+- **验证方式**：自动化测试报告、CI/CD流程验证
+
+```java
+// 测试覆盖率规则调用示例
+public void runTestsAndGenerateReports(Module module) {
+  // 1. 运行测试
+  runTests(module);
+  
+  // 2. 生成JaCoCo原始报告
+  generateJacocoReport(module);
+  
+  // 3. 生成自定义中文报告
+  generateCustomChineseReport(module, getCurrentDate());
+  
+  // 4. 验证报告是否符合存储位置规范
+  verifyReportLocation(module);
+}
+```
+
+## 五、规则优先级与冲突解决
+
+当规则间发生冲突时，按照以下优先级顺序解决：
+
+1. 开发流程强制规则（最高优先级）
+2. 架构实现强制规则
+3. 测试覆盖率强制规则
+4. DDD概念应用规则
+5. 技术实现应用规则
+6. 工具类使用规则（最低优先级）
+
+**冲突解决原则**：
+- 强制性规则优先于场景化规则
+- 领域逻辑正确性优先于技术实现便利性
+- 当同级规则冲突时，通过团队讨论解决并形成明确结论

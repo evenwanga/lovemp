@@ -1,0 +1,175 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 技术实现指南
+
+本项目基于Spring Boot 3.4.5实现，采用六边形架构与领域驱动设计相结合的方式。以下是关键技术实现细节。
+
+## 技术栈集成
+
+### 1. 依赖注入配置
+
+使用Spring的依赖注入，但确保依赖方向正确（指向领域核心）：
+
+```java
+@Configuration
+public class PersonDomainConfig {
+    @Bean
+    public PersonDomainService personDomainService(PersonRepository personRepository) {
+        return new PersonDomainService(personRepository);
+    }
+}
+```
+
+### 2. 持久化实现
+
+使用Spring Data JPA实现数据持久化，但通过适配器模式隔离：
+
+```java
+// JPA Repository接口
+public interface JpaPersonRepository extends JpaRepository<PersonPO, String> {
+}
+
+// 适配器实现
+@Repository
+public class PersonRepositoryImpl implements PersonRepository {
+    private final JpaPersonRepository jpaRepository;
+    private final PersonMapper mapper;
+    
+    // 构造器注入
+    public PersonRepositoryImpl(JpaPersonRepository jpaRepository, PersonMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.mapper = mapper;
+    }
+    
+    @Override
+    public Optional<Person> findById(PersonId personId) {
+        return jpaRepository.findById(personId.getValue())
+            .map(mapper::toDomain);
+    }
+}
+```
+
+### 3. 对象映射
+
+使用MapStruct进行领域对象与DTO/PO之间的转换：
+
+```java
+@Mapper(componentModel = "spring")
+public interface PersonMapper {
+    Person toDomain(PersonPO personPO);
+    PersonPO toPersistence(Person person);
+    PersonDTO toDto(Person person);
+    
+    default PersonId map(String id) {
+        return id == null ? null : new PersonId(id);
+    }
+    
+    default String map(PersonId personId) {
+        return personId == null ? null : personId.getValue();
+    }
+}
+```
+
+### 4. REST API实现
+
+使用Spring MVC实现REST接口，作为入站适配器：
+
+```java
+@RestController
+@RequestMapping("/api/persons")
+public class PersonController {
+    private final PersonManagementService personService;
+    private final PersonMapper mapper;
+    
+    public PersonController(PersonManagementService personService, PersonMapper mapper) {
+        this.personService = personService;
+        this.mapper = mapper;
+    }
+    
+    @PostMapping
+    public ResponseEntity<PersonDTO> createPerson(@Valid @RequestBody CreatePersonRequest request) {
+        PersonId personId = personService.createPerson(request.getName(), request.getBirthDate());
+        Person person = personService.findById(personId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(person));
+    }
+}
+```
+
+### 5. 事件发布与订阅
+
+使用Spring Events处理应用内事件，使用Spring Cloud Stream处理跨服务事件：
+
+```java
+// 事件发布
+@Service
+public class PersonEventPublisherImpl implements PersonEventPublisher {
+    private final ApplicationEventPublisher eventPublisher;
+    
+    public PersonEventPublisherImpl(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+    
+    @Override
+    public void publish(PersonCreatedEvent event) {
+        eventPublisher.publishEvent(event);
+    }
+}
+
+// 事件监听
+@Component
+public class PersonEventListener {
+    private final SomeService someService;
+    
+    public PersonEventListener(SomeService someService) {
+        this.someService = someService;
+    }
+    
+    @EventListener
+    public void handlePersonCreatedEvent(PersonCreatedEvent event) {
+        someService.doSomething(event.getPersonId());
+    }
+}
+```
+
+### 6. 安全实现
+
+使用Spring Security处理认证和授权：
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/public/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(withDefaults())
+            );
+        return http.build();
+    }
+}
+```
+
+## 最佳实践
+
+1. **构造器注入**：始终使用构造器注入而非字段注入
+2. **不可变对象**：值对象应设计为不可变对象
+3. **单一职责**：每个类保持单一职责
+4. **显式依赖**：通过构造函数明确声明依赖
+5. **领域事件**：使用事件实现领域间的松耦合集成
+6. **测试驱动**：编写测试先于实现代码
+7. **异常处理**：业务异常应定义在领域层，技术异常在适配器层处理
+
+## 性能优化
+
+1. **Redis缓存**：为频繁访问的数据添加缓存
+2. **分页查询**：大数据集合查询应实现分页
+3. **延迟加载**：JPA中使用懒加载避免不必要的数据获取
+4. **批量操作**：使用批处理提高数据库操作效率

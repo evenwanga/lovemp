@@ -1,0 +1,119 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 领域驱动设计(DDD)概念指南
+
+本项目采用领域驱动设计(Domain-Driven Design, DDD)的思想构建，重点关注业务领域模型和领域逻辑。
+
+## 核心概念
+
+### 1. 限界上下文(Bounded Context)
+
+项目划分为以下限界上下文，每个上下文作为独立模块存在：
+- **自然人核心域**：处理人员基本信息
+- **品牌产品域**：管理品牌相关信息
+- **劳动力资源域**：处理雇佣关系和用工管理
+- **顾客关系域**：管理客户关系
+- **认证授权域**：处理身份认证和权限控制
+
+### 2. 领域模型(Domain Model)
+
+#### 聚合根(Aggregate Root)
+每个限界上下文有一个主要的聚合根：
+- `Person`：自然人聚合根
+- `Brand`：品牌聚合根
+- `LaborResource`：劳动力资源聚合根
+- `BrandCustomer`：品牌客户关系聚合根
+- `Account`：账号聚合根
+
+#### 实体(Entity)
+具有唯一标识的对象，如：
+- `EmploymentEvent`：雇佣事件实体
+- `LaborPolicy`：用工策略实体
+- `Role`：角色实体
+
+#### 值对象(Value Object)
+没有唯一标识，通过属性值定义的对象，如：
+- `Biometric`：生物特征值对象
+- `PersonId`：自然人标识值对象
+- `TimeRange`：时间范围值对象
+
+### 3. 领域服务(Domain Service)
+
+处理不属于单一实体的领域逻辑，例如：
+- `PersonDomainService`：处理跨人员实体的业务逻辑
+- `LaborDomainService`：处理雇佣相关的复杂逻辑
+
+### 4. 应用服务(Application Service)
+
+协调领域对象完成用例，例如：
+- `PersonApplicationService`：实现人员相关用例
+- `BrandApplicationService`：实现品牌相关用例
+
+### 5. 仓储(Repository)
+
+提供持久化能力，每个聚合根对应一个仓储：
+- `PersonRepository`：人员聚合根的仓储
+- `BrandRepository`：品牌聚合根的仓储
+
+### 6. 领域事件(Domain Event)
+
+表达领域中发生的事件，用于领域间的集成：
+- `PersonCreatedEvent`：人员创建事件
+- `EmploymentCreatedEvent`：雇佣创建事件
+
+## 代码示例
+
+### 聚合根示例
+
+```java
+public class Person extends AggregateRoot<PersonId> {
+    private String name;
+    private LocalDate birthDate;
+    private Biometric biometric;
+    
+    public Person(String name, LocalDate birthDate) {
+        this.id = new PersonId(UUID.randomUUID().toString());
+        this.name = name;
+        this.birthDate = birthDate;
+        
+        // 发布领域事件
+        registerEvent(new PersonCreatedEvent(this.id, this.name));
+    }
+    
+    public void updateBiometric(Biometric biometric) {
+        this.biometric = biometric;
+    }
+}
+```
+
+### 值对象示例
+
+```java
+public class Biometric implements ValueObject {
+    private final String biometricData;
+    
+    public Biometric(String biometricData) {
+        this.biometricData = biometricData;
+    }
+    
+    public String getBiometricData() {
+        return biometricData;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Biometric that = (Biometric) o;
+        return Objects.equals(biometricData, that.biometricData);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(biometricData);
+    }
+}
+```

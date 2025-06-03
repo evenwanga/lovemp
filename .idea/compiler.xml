@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lovemp-common" />
+        <module name="lovemp-starter" />
+        <module name="lovemp-domain-person" />
+      </profile>
+      <profile name="Annotation profile for lovemp-ddd-parent" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/apache-maven-3.9.9/repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="lovemp-domain-brand" />
+        <module name="lovemp-domain-enterprise" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lovemp-common" options="-parameters" />
+      <module name="lovemp-domain-brand" options="-parameters" />
+      <module name="lovemp-domain-enterprise" options="-parameters" />
+      <module name="lovemp-domain-person" options="-parameters" />
+      <module name="lovemp-starter" options="-parameters" />
+    </option>
+  </component>
+</project>

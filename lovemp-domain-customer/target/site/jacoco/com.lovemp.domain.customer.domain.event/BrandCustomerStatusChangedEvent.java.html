@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BrandCustomerStatusChangedEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">lovemp-domain-customer</a> &gt; <a href="index.source.html" class="el_package">com.lovemp.domain.customer.domain.event</a> &gt; <span class="el_source">BrandCustomerStatusChangedEvent.java</span></div><h1>BrandCustomerStatusChangedEvent.java</h1><pre class="source lang-java linenums">package com.lovemp.domain.customer.domain.event;
+
+import com.lovemp.common.domain.DomainEvent;
+import com.lovemp.domain.customer.domain.model.valueobject.CustomerRelationId;
+import com.lovemp.domain.customer.domain.model.valueobject.CustomerStatus;
+import lombok.Getter;
+
+/**
+ * 品牌顾客状态变更事件
+ */
+@Getter
+public class BrandCustomerStatusChangedEvent extends DomainEvent {
+    
+    /**
+     * 顾客关系ID
+     */
+<span class="fc" id="L17">    private final CustomerRelationId customerRelationId;</span>
+    
+    /**
+     * 原状态
+     */
+<span class="fc" id="L22">    private final CustomerStatus oldStatus;</span>
+    
+    /**
+     * 新状态
+     */
+<span class="fc" id="L27">    private final CustomerStatus newStatus;</span>
+    
+    /**
+     * 变更原因
+     */
+<span class="fc" id="L32">    private final String reason;</span>
+    
+    /**
+     * 构造函数
+     * 
+     * @param customerRelationId 顾客关系ID
+     * @param oldStatus 原状态
+     * @param newStatus 新状态
+     */
+    public BrandCustomerStatusChangedEvent(CustomerRelationId customerRelationId, 
+                                         CustomerStatus oldStatus, CustomerStatus newStatus) {
+<span class="fc" id="L43">        super();</span>
+<span class="fc" id="L44">        this.customerRelationId = customerRelationId;</span>
+<span class="fc" id="L45">        this.oldStatus = oldStatus;</span>
+<span class="fc" id="L46">        this.newStatus = newStatus;</span>
+<span class="fc" id="L47">        this.reason = null;</span>
+<span class="fc" id="L48">    }</span>
+    
+    /**
+     * 构造函数（带原因）
+     * 
+     * @param customerRelationId 顾客关系ID
+     * @param oldStatus 原状态
+     * @param newStatus 新状态
+     * @param reason 变更原因
+     */
+    public BrandCustomerStatusChangedEvent(CustomerRelationId customerRelationId, 
+                                         CustomerStatus oldStatus, CustomerStatus newStatus, String reason) {
+<span class="fc" id="L60">        super();</span>
+<span class="fc" id="L61">        this.customerRelationId = customerRelationId;</span>
+<span class="fc" id="L62">        this.oldStatus = oldStatus;</span>
+<span class="fc" id="L63">        this.newStatus = newStatus;</span>
+<span class="fc" id="L64">        this.reason = reason;</span>
+<span class="fc" id="L65">    }</span>
+    
+    @Override
+    public String getEventType() {
+<span class="fc" id="L69">        return &quot;BrandCustomerStatusChanged&quot;;</span>
+    }
+    
+    /**
+     * 是否为激活事件
+     * 
+     * @return true-是激活事件，false-不是激活事件
+     */
+    public boolean isActivated() {
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        return newStatus.isActive() &amp;&amp; !oldStatus.isActive();</span>
+    }
+    
+    /**
+     * 是否为冻结事件
+     * 
+     * @return true-是冻结事件，false-不是冻结事件
+     */
+    public boolean isFrozen() {
+<span class="pc bpc" id="L87" title="1 of 4 branches missed.">        return newStatus.isFrozen() &amp;&amp; !oldStatus.isFrozen();</span>
+    }
+    
+    /**
+     * 是否为解冻事件
+     * 
+     * @return true-是解冻事件，false-不是解冻事件
+     */
+    public boolean isUnfrozen() {
+<span class="pc bpc" id="L96" title="1 of 4 branches missed.">        return oldStatus.isFrozen() &amp;&amp; newStatus.isActive();</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

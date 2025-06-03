@@ -1,0 +1,81 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# Lovemp 项目单元测试全局规则
+
+## 测试策略总览
+
+Lovemp项目采用分层测试策略，针对不同架构层次使用不同的测试方法：
+
+- **领域层**：纯粹单元测试，关注业务规则和领域行为
+- **应用层**：集成测试，关注用例流程和事务管理
+- **入站适配器**：端到端集成测试，关注请求映射和响应封装
+- **出站适配器**：集成测试，关注持久化逻辑和外部系统调用
+
+主要使用的测试框架和工具包括JUnit 5、AssertJ、Mockito、Testcontainers和JaCoCo。
+
+## 测试命名与结构规范
+
+测试命名应遵循`test[被测功能][测试场景/条件]`模式，例如：
+- `testCreatePersonWithValidData`
+- `testAddAddressWithDefaultTag`
+
+测试结构应遵循AAA（Arrange-Act-Assert）模式：
+1. Arrange - 准备测试数据和前置条件
+2. Act - 执行被测试的行为
+3. Assert - 验证预期结果
+
+## 测试覆盖率要求
+
+| 代码类型 | 行覆盖率要求 | 分支覆盖率要求 |
+| --- | --- | --- |
+| 领域模型 | ≥ 90% | ≥ 80% |
+| 应用服务 | ≥ 85% | ≥ 75% |
+| 适配器 | ≥ 80% | ≥ 70% |
+| 配置类 | ≥ 60% | ≥ 50% |
+
+整体项目最低覆盖率要求：行覆盖率80%，分支覆盖率70%。
+
+## 领域层测试示例
+
+参考[PersonTest.java](mdc:lovemp-domain-person/src/test/java/com/lovemp/domain/person/domain/PersonTest.java)和值对象测试类如[IdentityDocumentTest.java](mdc:lovemp-domain-person/src/test/java/com/lovemp/domain/person/domain/valueobject/IdentityDocumentTest.java)。
+
+领域层测试应关注：
+- 构造函数和工厂方法验证
+- 状态更改方法和约束条件
+- 集合管理方法
+- 业务规则和不变量检查
+- 领域事件发布验证
+
+## 应用层测试原则
+
+应用服务测试应着重于：
+- 输入验证逻辑
+- 完整业务流程执行
+- 异常处理行为
+- 事务边界管理
+- 与依赖组件的交互验证
+
+## 适配器层测试规范
+
+REST API测试应使用@WebMvcTest，关注请求映射、参数解析、响应生成和错误处理。
+
+持久化适配器测试应使用@SpringBootTest和Testcontainers，关注实体映射、CRUD操作、查询实现和事务管理。
+
+## 测试代码质量保证
+
+- 测试代码应与生产代码保持同等质量标准
+- 提取共享测试夹具和辅助方法
+- 使用参数化测试减少重复代码
+- 保持测试的独立性和可维护性
+
+## 测试执行流程
+
+使用[生成测试覆盖率报告.sh](mdc:lovemp-domain-person/生成测试覆盖率报告.sh)脚本或Maven命令生成覆盖率报告：
+```bash
+mvn clean test jacoco:report -pl lovemp-domain-person
+```
+
+详细规范请参考[单元测试规范文档.md](mdc:lovemp-domain-person/单元测试规范文档.md)

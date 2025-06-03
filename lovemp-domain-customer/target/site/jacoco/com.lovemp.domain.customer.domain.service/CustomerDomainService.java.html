@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomerDomainService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">lovemp-domain-customer</a> &gt; <a href="index.source.html" class="el_package">com.lovemp.domain.customer.domain.service</a> &gt; <span class="el_source">CustomerDomainService.java</span></div><h1>CustomerDomainService.java</h1><pre class="source lang-java linenums">package com.lovemp.domain.customer.domain.service;
+
+import com.lovemp.common.util.Assert;
+import com.lovemp.domain.customer.domain.model.aggregate.BrandCustomer;
+import com.lovemp.domain.customer.domain.model.entity.CustomerSharing;
+import com.lovemp.domain.customer.domain.model.valueobject.*;
+import com.lovemp.domain.person.domain.model.valueobject.PersonId;
+
+import java.time.LocalDate;
+import java.util.List;
+
+/**
+ * 顾客领域服务
+ * 
+ * &lt;p&gt;处理跨聚合的业务逻辑&lt;/p&gt;
+ */
+<span class="fc" id="L17">public class CustomerDomainService {</span>
+    
+    /**
+     * 创建品牌顾客关系
+     * 
+     * @param brandId 品牌ID
+     * @param personId 自然人ID
+     * @param customerType 顾客类型
+     * @param relationType 关系类型
+     * @param brandCode 品牌编码
+     * @param sequence 序号
+     * @return 品牌顾客实例
+     */
+    public BrandCustomer createBrandCustomer(String brandId, PersonId personId, 
+                                           CustomerType customerType, RelationType relationType,
+                                           String brandCode, long sequence) {
+<span class="fc" id="L33">        Assert.notEmpty(brandId, &quot;品牌ID不能为空&quot;);</span>
+<span class="fc" id="L34">        Assert.notNull(personId, &quot;自然人ID不能为空&quot;);</span>
+<span class="fc" id="L35">        Assert.notNull(customerType, &quot;顾客类型不能为空&quot;);</span>
+<span class="fc" id="L36">        Assert.notNull(relationType, &quot;关系类型不能为空&quot;);</span>
+<span class="fc" id="L37">        Assert.notEmpty(brandCode, &quot;品牌编码不能为空&quot;);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        Assert.isTrue(sequence &gt; 0, &quot;序号必须大于0&quot;);</span>
+        
+<span class="fc" id="L40">        CustomerRelationId id = CustomerRelationId.generate();</span>
+<span class="fc" id="L41">        CustomerCode customerCode = CustomerCode.generate(brandCode, sequence);</span>
+        
+<span class="fc" id="L43">        return BrandCustomer.create(id, brandId, personId, customerCode, customerType, relationType);</span>
+    }
+    
+    /**
+     * 创建顾客共享关系
+     * 
+     * @param sourceBrandId 源品牌ID
+     * @param targetBrandId 目标品牌ID
+     * @param personId 自然人ID
+     * @param sharingType 共享类型
+     * @param authLevel 授权级别
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return 顾客共享实例
+     */
+    public CustomerSharing createCustomerSharing(String sourceBrandId, String targetBrandId,
+                                                PersonId personId, SharingType sharingType,
+                                                AuthLevel authLevel, LocalDate startDate, LocalDate endDate) {
+<span class="fc" id="L61">        Assert.notEmpty(sourceBrandId, &quot;源品牌ID不能为空&quot;);</span>
+<span class="fc" id="L62">        Assert.notEmpty(targetBrandId, &quot;目标品牌ID不能为空&quot;);</span>
+<span class="fc" id="L63">        Assert.notNull(personId, &quot;自然人ID不能为空&quot;);</span>
+<span class="fc" id="L64">        Assert.notNull(sharingType, &quot;共享类型不能为空&quot;);</span>
+<span class="fc" id="L65">        Assert.notNull(authLevel, &quot;授权级别不能为空&quot;);</span>
+<span class="fc" id="L66">        Assert.notNull(startDate, &quot;开始日期不能为空&quot;);</span>
+        
+<span class="fc" id="L68">        SharingId sharingId = SharingId.generate();</span>
+        
+<span class="fc" id="L70">        return CustomerSharing.create(sharingId, sourceBrandId, targetBrandId, personId,</span>
+                                    sharingType, authLevel, startDate, endDate);
+    }
+    
+    /**
+     * 检查是否可以创建共享关系
+     * 
+     * @param sourceBrandId 源品牌ID
+     * @param targetBrandId 目标品牌ID
+     * @param personId 自然人ID
+     * @param existingSharings 已存在的共享关系
+     * @return true-可以创建，false-不可以创建
+     */
+    public boolean canCreateSharing(String sourceBrandId, String targetBrandId, PersonId personId,
+                                  List&lt;CustomerSharing&gt; existingSharings) {
+<span class="fc" id="L85">        Assert.notEmpty(sourceBrandId, &quot;源品牌ID不能为空&quot;);</span>
+<span class="fc" id="L86">        Assert.notEmpty(targetBrandId, &quot;目标品牌ID不能为空&quot;);</span>
+<span class="fc" id="L87">        Assert.notNull(personId, &quot;自然人ID不能为空&quot;);</span>
+        
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (sourceBrandId.equals(targetBrandId)) {</span>
+<span class="fc" id="L90">            return false; // 同一品牌不能创建共享关系</span>
+        }
+        
+<span class="fc bfc" id="L93" title="All 4 branches covered.">        if (existingSharings == null || existingSharings.isEmpty()) {</span>
+<span class="fc" id="L94">            return true; // 没有已存在的共享关系，可以创建</span>
+        }
+        
+        // 检查是否已存在相同的共享关系
+<span class="fc" id="L98">        return existingSharings.stream()</span>
+<span class="fc" id="L99">                .noneMatch(sharing -&gt; </span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">                    sharing.getSourceBrandId().equals(sourceBrandId) &amp;&amp;</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">                    sharing.getTargetBrandId().equals(targetBrandId) &amp;&amp;</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">                    sharing.getPersonId().equals(personId) &amp;&amp;</span>
+<span class="fc bfc" id="L103" title="All 4 branches covered.">                    (sharing.getStatus().isActive() || sharing.getStatus().isPending())</span>
+                );
+    }
+    
+    /**
+     * 计算顾客等级
+     * 
+     * @param points 积分
+     * @param customerType 顾客类型
+     * @return 等级
+     */
+    public int calculateCustomerLevel(int points, CustomerType customerType) {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        Assert.isTrue(points &gt;= 0, &quot;积分不能为负数&quot;);</span>
+<span class="fc" id="L116">        Assert.notNull(customerType, &quot;顾客类型不能为空&quot;);</span>
+        
+        // 根据顾客类型调整等级计算规则
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (customerType.isVip()) {</span>
+<span class="fc" id="L120">            return calculateVipLevel(points);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        } else if (customerType.isWholesale()) {</span>
+<span class="fc" id="L122">            return calculateWholesaleLevel(points);</span>
+        } else {
+<span class="fc" id="L124">            return calculateNormalLevel(points);</span>
+        }
+    }
+    
+    /**
+     * 检查是否可以升级为VIP
+     * 
+     * @param customer 品牌顾客
+     * @return true-可以升级，false-不可以升级
+     */
+    public boolean canUpgradeToVip(BrandCustomer customer) {
+<span class="fc" id="L135">        Assert.notNull(customer, &quot;品牌顾客不能为空&quot;);</span>
+        
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (customer.isVip()) {</span>
+<span class="fc" id="L138">            return false; // 已经是VIP，无需升级</span>
+        }
+        
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (!customer.canOperate()) {</span>
+<span class="fc" id="L142">            return false; // 状态不允许操作</span>
+        }
+        
+        // VIP升级条件：积分达到5000且等级达到3级
+<span class="fc bfc" id="L146" title="All 4 branches covered.">        return customer.getPoints() &gt;= 5000 &amp;&amp; customer.getLevel() &gt;= 3;</span>
+    }
+    
+    /**
+     * 检查共享关系是否即将过期
+     * 
+     * @param sharings 共享关系列表
+     * @param warningDays 预警天数
+     * @return 即将过期的共享关系列表
+     */
+    public List&lt;CustomerSharing&gt; findExpiringSharings(List&lt;CustomerSharing&gt; sharings, int warningDays) {
+<span class="fc" id="L157">        Assert.notNull(sharings, &quot;共享关系列表不能为空&quot;);</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        Assert.isTrue(warningDays &gt; 0, &quot;预警天数必须大于0&quot;);</span>
+        
+<span class="fc" id="L160">        LocalDate warningDate = LocalDate.now().plusDays(warningDays);</span>
+        
+<span class="fc" id="L162">        return sharings.stream()</span>
+<span class="fc" id="L163">                .filter(sharing -&gt; sharing.getStatus().isActive())</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">                .filter(sharing -&gt; sharing.getEndDate() != null)</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">                .filter(sharing -&gt; !sharing.getEndDate().isAfter(warningDate))</span>
+<span class="fc" id="L166">                .toList();</span>
+    }
+    
+    /**
+     * 计算普通顾客等级
+     * 
+     * @param points 积分
+     * @return 等级
+     */
+    private int calculateNormalLevel(int points) {
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (points &gt;= 10000) {</span>
+<span class="fc" id="L177">            return 5; // 钻石级</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        } else if (points &gt;= 5000) {</span>
+<span class="fc" id="L179">            return 4; // 白金级</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        } else if (points &gt;= 2000) {</span>
+<span class="fc" id="L181">            return 3; // 黄金级</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        } else if (points &gt;= 500) {</span>
+<span class="fc" id="L183">            return 2; // 银牌级</span>
+        } else {
+<span class="fc" id="L185">            return 1; // 普通级</span>
+        }
+    }
+    
+    /**
+     * 计算VIP顾客等级
+     * 
+     * @param points 积分
+     * @return 等级
+     */
+    private int calculateVipLevel(int points) {
+        // VIP顾客等级计算规则更宽松
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (points &gt;= 8000) {</span>
+<span class="fc" id="L198">            return 5; // 钻石VIP</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        } else if (points &gt;= 4000) {</span>
+<span class="fc" id="L200">            return 4; // 白金VIP</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        } else if (points &gt;= 1500) {</span>
+<span class="fc" id="L202">            return 3; // 黄金VIP</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        } else if (points &gt;= 300) {</span>
+<span class="fc" id="L204">            return 2; // 银牌VIP</span>
+        } else {
+<span class="fc" id="L206">            return 1; // 普通VIP</span>
+        }
+    }
+    
+    /**
+     * 计算批发顾客等级
+     * 
+     * @param points 积分
+     * @return 等级
+     */
+    private int calculateWholesaleLevel(int points) {
+        // 批发顾客等级计算规则更严格
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (points &gt;= 15000) {</span>
+<span class="fc" id="L219">            return 5; // 钻石批发商</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        } else if (points &gt;= 8000) {</span>
+<span class="fc" id="L221">            return 4; // 白金批发商</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        } else if (points &gt;= 3000) {</span>
+<span class="fc" id="L223">            return 3; // 黄金批发商</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        } else if (points &gt;= 1000) {</span>
+<span class="fc" id="L225">            return 2; // 银牌批发商</span>
+        } else {
+<span class="fc" id="L227">            return 1; // 普通批发商</span>
+        }
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

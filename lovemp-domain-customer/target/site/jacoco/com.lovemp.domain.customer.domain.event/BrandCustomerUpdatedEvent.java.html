@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BrandCustomerUpdatedEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">lovemp-domain-customer</a> &gt; <a href="index.source.html" class="el_package">com.lovemp.domain.customer.domain.event</a> &gt; <span class="el_source">BrandCustomerUpdatedEvent.java</span></div><h1>BrandCustomerUpdatedEvent.java</h1><pre class="source lang-java linenums">package com.lovemp.domain.customer.domain.event;
+
+import com.lovemp.common.domain.DomainEvent;
+import com.lovemp.domain.customer.domain.model.valueobject.CustomerRelationId;
+import lombok.Getter;
+
+/**
+ * 品牌顾客更新事件
+ */
+@Getter
+public class BrandCustomerUpdatedEvent extends DomainEvent {
+    
+    /**
+     * 顾客关系ID
+     */
+<span class="fc" id="L16">    private final CustomerRelationId customerRelationId;</span>
+    
+    /**
+     * 更新字段
+     */
+<span class="fc" id="L21">    private final String updatedField;</span>
+    
+    /**
+     * 构造函数
+     * 
+     * @param customerRelationId 顾客关系ID
+     * @param updatedField 更新字段
+     */
+    public BrandCustomerUpdatedEvent(CustomerRelationId customerRelationId, String updatedField) {
+<span class="fc" id="L30">        super();</span>
+<span class="fc" id="L31">        this.customerRelationId = customerRelationId;</span>
+<span class="fc" id="L32">        this.updatedField = updatedField;</span>
+<span class="fc" id="L33">    }</span>
+    
+    @Override
+    public String getEventType() {
+<span class="fc" id="L37">        return &quot;BrandCustomerUpdated&quot;;</span>
+    }
+    
+    /**
+     * 是否为积分更新事件
+     * 
+     * @return true-是积分更新事件，false-不是积分更新事件
+     */
+    public boolean isPointsUpdated() {
+<span class="fc" id="L46">        return &quot;points&quot;.equals(updatedField);</span>
+    }
+    
+    /**
+     * 是否为等级更新事件
+     * 
+     * @return true-是等级更新事件，false-不是等级更新事件
+     */
+    public boolean isLevelUpdated() {
+<span class="fc" id="L55">        return &quot;level&quot;.equals(updatedField);</span>
+    }
+    
+    /**
+     * 是否为顾客类型更新事件
+     * 
+     * @return true-是顾客类型更新事件，false-不是顾客类型更新事件
+     */
+    public boolean isCustomerTypeUpdated() {
+<span class="fc" id="L64">        return &quot;customerType&quot;.equals(updatedField);</span>
+    }
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

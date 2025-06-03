@@ -1,0 +1,166 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 研发过程规则
+
+本项目遵循严格的研发流程规范，以确保代码质量和项目进度。所有开发人员必须遵循以下规则：
+
+## 1. 领域需求优先
+
+在开始对任何领域进行研发前，必须首先与用户确认该领域的具体需求，并生成领域需求文档：
+
+- 每个领域必须有单独的需求文档（`.md`格式）
+- 需求文档应包含用户故事、业务规则和验收标准
+- 只有在需求文档获得确认后，才能开始开发工作
+
+**示例文档结构**：`lovemp-domain-person/docs/person-domain-requirements.md`
+
+## 2. 测试驱动开发
+
+本项目采用测试驱动开发(TDD)方法：
+
+- 优先编写测试用例，然后再实现功能代码
+- 测试用例一旦完成，在开发过程中不得修改（除非明确声明需要修改测试用例）
+- 单元测试应覆盖所有核心领域逻辑
+- 集成测试应验证领域间的交互
+
+**测试规范**：
+
+1. **测试数据准备方式**：为提高可调试性，测试数据应直接在测试方法内准备，而非依赖外部工厂类
+2. 遵循"准备数据-执行方法-验证结果"的测试步骤
+3. 测试方法命名应清晰表达测试意图
+4. 对于复杂对象，可选择性使用测试数据工厂作为辅助工具，但关键测试数据应在测试方法中明确定义
+
+**推荐的测试数据准备方式**：
+```java
+@Test
+void should_update_certification_when_valid() {
+    // 准备 - 直接在测试方法中准备所有数据
+    EnterpriseId id = new EnterpriseId("ent-123");
+    Enterprise enterprise = Enterprise.create(
+        id, "云和互动科技有限公司", EnterpriseType.IT_INTERNET,
+        "91110105MA002XYZ3B", 
+        new LegalRepresentative("张三", "1101051980XXYYZZ", "13800000000"),
+        new BusinessLicense("BL12345", LocalDate.of(2020, 1, 1), LocalDate.of(2030, 1, 1)),
+        new Address("北京市", "海淀区", "中关村", "科技园区1号楼"),
+        new ContactInfo("service@company.com", "010-12345678")
+    );
+    
+    // 添加初始证书以便更新
+    EnterpriseCertification oldCertification = new EnterpriseCertification(
+        "cert-123", EnterpriseCertificationType.HIGH_TECH_ENTERPRISE,
+        "HT2022001", LocalDate.of(2022, 1, 1), 
+        LocalDate.of(2025, 1, 1), "科技部", "A级", "旧证书"
+    );
+    enterprise.addCertification(oldCertification);
+    
+    // 创建新证书用于更新
+    EnterpriseCertification newCertification = new EnterpriseCertification(
+        "cert-123", EnterpriseCertificationType.HIGH_TECH_ENTERPRISE,
+        "HT2023001", LocalDate.of(2023, 1, 1), 
+        LocalDate.of(2026, 1, 1), "科技部", "AAA级", "新证书"
+    );
+    
+    // 执行
+    enterprise.updateCertification(newCertification);
+    
+    // 验证
+    List<EnterpriseCertification> certifications = enterprise.getCertifications();
+    assertEquals(1, certifications.size());
+    assertEquals(newCertification, certifications.get(0));
+    assertEquals("AAA级", certifications.get(0).getLevel());
+    assertEquals(LocalDate.of(2026, 1, 1), certifications.get(0).getExpirationDate());
+}
+```
+
+**测试工厂可选结构**（可选择性使用）：
+```
+lovemp-domain-${domain}/src/test/java/com/lovemp/domain/${domain}/test/fixtures/
+├── PersonFixture.java
+├── AddressFixture.java
+└── ...
+```
+
+**测试工厂辅助示例**（作为可选辅助工具）：
+```java
+// PersonFixture.java - Person领域对象的测试数据工厂
+public class PersonFixture {
+    public static Person createBasicPerson() {
+        // 创建基本Person对象，主要用于不关注Person详细属性的测试场景
+        PersonId personId = PersonId.of(UUID.randomUUID().toString());
+        return Person.create(personId, "张三", Gender.MALE, LocalDate.of(1990, 1, 1),
+                new IdentityDocument("110105199001010011", "公安部", LocalDate.of(2030, 1, 1)),
+                new ContactInfo("zhangsan@example.com", "13800000000"));
+    }
+}
+
+@Test
+void person_should_update_email() {
+    // 对于简单场景，可以选择性使用工厂类
+    Person person = PersonFixture.createBasicPerson();
+    
+    // 关键测试数据直接在测试方法中定义
+    String newEmail = "new_email@example.com";
+    
+    // 执行
+    person.updateEmail(newEmail);
+    
+    // 验证
+    assertEquals(newEmail, person.getContactInfo().getEmail());
+}
+```
+
+## 3. 使用Sequential Thinking工具
+
+在开发过程中，必须使用MCP工具中的Sequential Thinking进行协作：
+
+- 复杂问题解决必须使用Sequential Thinking工具进行拆解
+- 确保每一步逻辑清晰，并保持连贯性
+- 使用工具时必须明确思考总步骤和当前步骤
+
+**使用方式**：
+```
+mcp_sequential-thinking_sequentialthinking {
+    "thought": "当前思考步骤的内容...",
+    "nextThoughtNeeded": true/false,
+    "thoughtNumber": 当前步骤号,
+    "totalThoughts": 预计总步骤数
+}
+```
+
+## 4. 使用Context7获取外部文档
+
+当需要引用外部文档或库时，必须使用MCP工具中的Context7进行协作：
+
+- 首先使用`resolve-library-id`获取库的Context7兼容ID
+- 然后使用`get-library-docs`获取对应文档
+- 基于获取的文档内容进行开发
+
+**使用方式**：
+```
+// 步骤1：解析库ID
+mcp_context7_resolve-library-id {
+    "libraryName": "库名称"
+}
+
+// 步骤2：获取文档
+mcp_context7_get-library-docs {
+    "context7CompatibleLibraryID": "上一步获取的ID",
+    "topic": "具体主题"
+}
+```
+
+## 5. 开发流程检查清单
+
+每个功能开发完成后，必须检查以下项目：
+
+- [ ] 领域需求文档已创建并确认
+- [ ] 测试用例已先于实现代码编写
+- [ ] 测试数据直接在测试方法中准备，确保可调试性
+- [ ] 测试覆盖率达到标准要求
+- [ ] 使用Sequential Thinking工具分析了复杂问题
+- [ ] 必要时使用Context7获取了外部文档
+- [ ] 代码遵循六边形架构和DDD原则
+- [ ] 所有测试通过
