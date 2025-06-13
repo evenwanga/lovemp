@@ -1,0 +1,46 @@
+# Java & Maven
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+/target/
+/build/
+/out/
+
+# Logs
+*.log
+
+# Test
+/test-output/
+
+# Others
+*.tmp
+*.bak
+*.old
+*.orig
+*.rej
+
+# VSCode
+.vscode/
+
+# Node
+node_modules/
+
+# Custom
+*.local
+*.env
+
+# Exclude all non-source files
