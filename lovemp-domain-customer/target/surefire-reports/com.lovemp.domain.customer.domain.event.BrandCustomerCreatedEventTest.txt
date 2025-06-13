@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.lovemp.domain.customer.domain.event.BrandCustomerCreatedEventTest
--------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in com.lovemp.domain.customer.domain.event.BrandCustomerCreatedEventTest

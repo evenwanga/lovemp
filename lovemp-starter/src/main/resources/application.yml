@@ -9,17 +9,17 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:h2:mem:lovemp;DB_CLOSE_DELAY=-1;MODE=MySQL
-    username: sa
-    password: 
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://bj-cynosdbmysql-grp-p0i80g8o.sql.tencentcdb.com:21508/testbusiness?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: test
+    password: test12345678T
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
   h2:
     console:

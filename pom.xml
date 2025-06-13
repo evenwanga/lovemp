@@ -24,6 +24,7 @@
         <module>lovemp-domain-enterprise</module>
         <module>lovemp-domain-labor</module>
         <module>lovemp-domain-customer</module>
+        <module>lovemp-domain-auth</module>
         <module>lovemp-starter</module>
     </modules>
     

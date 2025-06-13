@@ -1,8 +1,0 @@
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/LovempApplication.java
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/config/ExceptionHandlerConfig.java
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/config/JpaConfig.java
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/config/RedisConfig.java
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/config/SaTokenConfiguration.java
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/config/SecurityConfig.java
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/config/SwaggerConfig.java
-/Users/wangyiwen/AICoding/lovemp/lovemp-starter/src/main/java/com/lovemp/config/WebConfig.java

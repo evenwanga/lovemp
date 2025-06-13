@@ -4,8 +4,6 @@ import com.lovemp.common.exception.DomainRuleViolationException;
 import com.lovemp.domain.customer.domain.model.aggregate.BrandCustomer;
 import com.lovemp.domain.customer.domain.model.entity.CustomerSharing;
 import com.lovemp.domain.customer.domain.model.valueobject.*;
-import com.lovemp.domain.customer.domain.port.outgoing.BrandCustomerRepository;
-import com.lovemp.domain.customer.domain.port.outgoing.CustomerSharingRepository;
 import com.lovemp.domain.person.domain.model.valueobject.PersonId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @DisplayName("CustomerDomainService 领域服务测试")
 class CustomerDomainServiceTest {

@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.lovemp.domain.customer.domain.model.aggregate.BrandCustomerTest
--------------------------------------------------------------------------------
-Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in com.lovemp.domain.customer.domain.model.aggregate.BrandCustomerTest
